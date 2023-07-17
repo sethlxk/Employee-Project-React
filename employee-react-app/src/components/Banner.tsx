@@ -5,7 +5,7 @@ import AddEmployeeButton from "./AddEmployeeButton";
 // }
 const Banner = () => {
   return (
-    <Box className = 'box' sx={{ flexGrow: 1}}>
+    <Box sx={{ flexGrow: 1}}>
       <AppBar className='appbar' sx={{bgcolor:"darkblue"}}>
         <Toolbar>
           <Typography

@@ -1,6 +1,7 @@
 #root {
   max-width: 1280px;
-  margin: 0 auto;
+  width: 100%;
+  margin: auto;
   padding: 2rem;
   text-align: center;
 }
@@ -34,7 +35,7 @@
 }
 
 .card {
-  padding: 2rem;
+  padding: 0.5rem;
   width: 320px;
 }
 
@@ -42,34 +43,26 @@
   color: #888;
 }
 
-.grid {
-  display: grid;
-  width:fit-content;
-}
-
-.box {
-  height: 4rem;
-  margin: 0;
-}
-
 .appbar {
   height: 4rem;
 }
 
 .grid-item {
-  padding: 32px;
-
+  padding: 0 !important;
 }
-.card-content{
+.card-content {
   padding: 10px;
 }
 
-.pagination{
-  display: block;
+.pagination {
+  display: flex;
+  width: 100%;
 }
-.test{
+.page-entries {
+  flex-grow: 1;
   text-align: left;
 }
-.page-buttons{
+.page-buttons {
+  flex-grow: 1;
   text-align: right;
 }

@@ -1,4 +1,5 @@
 import {
+  Box,
   Card,
   CardActions,
   CardContent,
@@ -40,73 +41,86 @@ const EmployeeGrid = () => {
     dispatch(paginationActions.setCurrentPage({ currentPage: page }));
   };
   return (
-    <div>
-      <Grid className="grid" container spacing={8}>
-        {pagedEmployees.map((employee) => (
-          <Grid
-            item
-            className="grid-item"
-            xs={12}
-            sm={6}
-            md={6}
-            lg={6}
-            xl={6}
-            key={employee.id}
-          >
-            <Card
-              className="card"
-              variant="outlined"
-              sx={{ backgroundColor: "grey.200" }}
+      <Box>
+        <Grid
+          margin={"0"}
+          container
+          spacing={8}
+          width="100%"
+          gap="20px"
+          justifyContent="center"
+        >
+          {pagedEmployees.map((employee) => (
+            <Grid
+              item
+              className="grid-item"
+              xs={12}
+              sm={12}
+              md={5}
+              lg={5}
+              xl={5}
+              key={employee.id}
+              width="100%"
+              sx={{ display: "flex", justifyContent: "center" }}
             >
-              <CardContent className="card-content">
-                <Grid container alignItems="center" spacing={1}>
-                  <Grid item xs={9}>
-                    <Typography
-                      variant="h4"
-                      gutterBottom
-                      sx={{ color: "darkblue", textAlign: "left" }}
-                    >
-                      {employee.name}
-                    </Typography>
-                    <Typography
-                      variant="body1"
-                      color="textSecondary"
-                      sx={{ color: "darkblue", textAlign: "left" }}
-                    >
-                      {employee.department}
-                    </Typography>
-                    <Typography
-                      variant="body1"
-                      color="textSecondary"
-                      sx={{ color: "darkblue", textAlign: "left" }}
-                    >
-                      ${employee.salary}
-                    </Typography>
+              <Card
+                className="card"
+                variant="outlined"
+                sx={{ backgroundColor: "grey.200" }}
+              >
+                <CardContent className="card-content">
+                  <Grid container alignItems="center" spacing={1}>
+                    <Grid item xs={9}>
+                      <Typography
+                        variant="h4"
+                        gutterBottom
+                        sx={{
+                          color: "darkblue",
+                          textAlign: "left",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {employee.name}
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        color="textSecondary"
+                        sx={{ color: "darkblue", textAlign: "left" }}
+                      >
+                        {employee.department}
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        color="textSecondary"
+                        sx={{ color: "darkblue", textAlign: "left" }}
+                      >
+                        ${employee.salary}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={3}>
+                      <CardActions>
+                        <EditEmployeeButton employee={employee} />
+                        <DeleteEmployeeButton employee={employee} />
+                      </CardActions>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={3}>
-                    <CardActions>
-                      <EditEmployeeButton employee={employee} />
-                      <DeleteEmployeeButton employee={employee} />
-                    </CardActions>
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-      <div className="pagination">
-        <div className="test">
-          Showing {startIndex + 1}-{Math.min(endIndex, employees.length)} out of{" "}
-          {employees.length} entries
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+        <div className="pagination">
+          <div className="page-entries">
+            Showing {startIndex + 1}-{Math.min(endIndex, employees.length)} out
+            of {employees.length} entries
+          </div>
+          <Pagination
+            totalPages={Math.ceil(employees.length / itemsPerPage)}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
         </div>
-        <Pagination
-          totalPages={Math.ceil(employees.length / itemsPerPage)}
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-        />
-      </div>
-    </div>
+      </Box>
   );
 };
 

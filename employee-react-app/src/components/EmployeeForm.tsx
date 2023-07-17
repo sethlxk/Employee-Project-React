@@ -104,7 +104,7 @@ const EmployeeForm = () => {
   return (
     <Box
       sx={{
-        width: "50rem",
+        width: 'auto',
         height: "40rem",
         boxShadow: 2,
         borderRadius: 2,
