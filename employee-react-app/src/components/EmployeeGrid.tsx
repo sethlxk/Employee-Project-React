@@ -9,12 +9,15 @@ import EditEmployeeButton from "./EditEmployeeButton";
 import DeleteEmployeeButton from "./DeleteEmployeeButton";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { fetchAllEmployees } from "../store/features/employeeSlice";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Employee } from "../models/employee.model";
 import "../App.css";
 import Pagination from "./Pagination";
+import { paginationActions } from "../store/features/paginationSlice";
 const EmployeeGrid = () => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  let currentPage = useAppSelector(
+    (state) => state.PaginationSlice.currentPage
+  );
   const itemsPerPage = 10;
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -28,13 +31,13 @@ const EmployeeGrid = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const pagedEmployees = employees.slice(startIndex, endIndex);
-  // useEffect(() => {
-  //   const startIndex = (currentPage - 1) * itemsPerPage;
-  //   const endIndex = startIndex + itemsPerPage;
-  //   const pagedEmployees = employees.slice(startIndex, endIndex);
-  // },[currentPage]);
+  useEffect(() => {
+    if (pagedEmployees.length == 0 && currentPage != 1) {
+      dispatch(paginationActions.setCurrentPage({ currentPage: 1 }));
+    }
+  }, [pagedEmployees]);
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+    dispatch(paginationActions.setCurrentPage({ currentPage: page }));
   };
   return (
     <div>
@@ -94,8 +97,8 @@ const EmployeeGrid = () => {
       </Grid>
       <div className="pagination">
         <div className="test">
-        Showing {startIndex + 1}-{Math.min(endIndex, employees.length)} out of{" "}
-        {employees.length} entries
+          Showing {startIndex + 1}-{Math.min(endIndex, employees.length)} out of{" "}
+          {employees.length} entries
         </div>
         <Pagination
           totalPages={Math.ceil(employees.length / itemsPerPage)}

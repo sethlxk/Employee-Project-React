@@ -1,35 +1,40 @@
-import { useState } from "react";
+import { Button } from "@mui/material";
 
 interface Props {
   totalPages: number;
   currentPage: number;
   onPageChange: any;
 }
-const Pagination = ({ totalPages, currentPage, onPageChange }: Props) => {
-  const [selectedPage, setSelectedPage] = useState(currentPage);
 
-  const handlePageClick = (page:number) => {
-    setSelectedPage(page);
+const Pagination = ({ totalPages, currentPage, onPageChange }: Props) => {
+  const handlePageClick = (page: number) => {
     onPageChange(page);
   };
 
   const handlePreviousClick = () => {
-    if (selectedPage > 1) {
-      handlePageClick(selectedPage - 1);
+    if (currentPage > 1) {
+      handlePageClick(currentPage - 1);
     }
   };
 
   const handleNextClick = () => {
-    if (selectedPage < totalPages) {
-      handlePageClick(selectedPage + 1);
+    if (currentPage < totalPages) {
+      handlePageClick(currentPage + 1);
     }
   };
-
   return (
     <div className="page-buttons">
-      <button onClick={handlePreviousClick}>Previous</button>
-      <span>{selectedPage}</span>
-      <button onClick={handleNextClick}>Next</button>
+      {currentPage != 1 ? (
+        <Button onClick={handlePreviousClick}>Previous</Button>
+      ) : (
+        <Button disabled>Previous</Button>
+      )}
+      <span>{currentPage}</span>
+      {currentPage != totalPages ? (
+        <Button onClick={handleNextClick}>Next</Button>
+      ) : (
+        <Button disabled>Next</Button>
+      )}
     </div>
   );
 };
