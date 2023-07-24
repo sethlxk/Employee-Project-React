@@ -31,19 +31,27 @@ const EmployeeGrid = () => {
   let currentPage = useAppSelector(
     (state) => state.PaginationSlice.currentPage
   );
-  useEffect(()=>{
-    if(location.state){ //if i am redirected from add-employee, i want to direct to the last page
-      dispatch(paginationActions.setTotalPage({totalPages: Math.ceil(employees.length/10)}))
-      dispatch(paginationActions.setToMaxPage())
+  useEffect(() => {
+    if (location.state) {
+      //if i am redirected from add-employee, i want to redirect to the last page to see my added employee if i am not on the last page
+      dispatch(
+        paginationActions.setTotalPage({
+          totalPages: Math.ceil(employees.length / 10),
+        })
+      );
+      dispatch(paginationActions.setToMaxPage());
     }
-  },[])
+  }, []);
   const itemsPerPage = 10;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const pagedEmployees = employees.slice(startIndex, endIndex);
-  useEffect(() => { //if i delete an item from a page and the page is empty, redirect to previous page
+  useEffect(() => {
+    //if i delete an item from a page and the page is empty, redirect to previous page
     if (pagedEmployees.length == 0 && currentPage != 1) {
-      dispatch(paginationActions.setCurrentPage({ currentPage: currentPage-1 }));
+      dispatch(
+        paginationActions.setCurrentPage({ currentPage: currentPage - 1 })
+      );
     }
   }, [pagedEmployees]);
   const handlePageChange = (page: number) => {

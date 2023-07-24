@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { BASE_URL_TOKEN } from "../../constants/constants";
 
-const BASE_URL = "http://localhost:8000/user/login";
 
 interface TokenState {
   token: string | null;
@@ -19,7 +19,7 @@ export const getToken = createAsyncThunk(
   "tokenSlice/getToken",
   async (user: { username: string; password: string }) => {
     try {
-      const response = await axios.post(BASE_URL, user);
+      const response = await axios.post(BASE_URL_TOKEN, user);
       localStorage.setItem("token", response.data)
       return response.data;
     } catch (error: any) {

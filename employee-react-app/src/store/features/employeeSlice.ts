@@ -1,8 +1,8 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Department, Employee } from "../../models/employee.model";
+import { BASE_URL_EMPLOYEE } from "../../constants/constants";
 
-const BASE_URL = "http://localhost:8000/employee";
 
 interface EmployeeState {
   employees: Employee[],
@@ -20,7 +20,7 @@ export const fetchAllEmployees = createAsyncThunk(
   "employeeSlice/fetchAllEmployees",
   async (token: string) => {
     try {
-      const response = await axios.get(BASE_URL, {
+      const response = await axios.get(BASE_URL_EMPLOYEE, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -42,7 +42,7 @@ export const createEmployee = createAsyncThunk(
   }) => {
     try {
       const employeeDetails = {name:employee.name, salary:employee.salary, department:employee.department}
-      const response = await axios.post(BASE_URL, employeeDetails, {
+      const response = await axios.post(BASE_URL_EMPLOYEE, employeeDetails, {
         headers: {
           Authorization: `Bearer ${employee.token}`
         }
@@ -57,7 +57,7 @@ export const createEmployee = createAsyncThunk(
 export const editEmployee = createAsyncThunk("employeeSlice/editEmployee", async(employee: {id:number, name:string, salary: number, department: Department, token: string}) => {
   try {
     const newEmployee = {name: employee.name, salary: employee.salary, department: employee.department}
-    const response = await axios.put(`${BASE_URL}/${employee.id}`, newEmployee, {
+    const response = await axios.put(`${BASE_URL_EMPLOYEE}/${employee.id}`, newEmployee, {
       headers: {
         Authorization: `Bearer ${employee.token}`
       }
@@ -70,7 +70,7 @@ export const editEmployee = createAsyncThunk("employeeSlice/editEmployee", async
 })
 export const deleteEmployee = createAsyncThunk("employeeSlice/deleteEmployee", async(employee: {id:number, token:string}) => {
   try {
-    const response = await axios.delete(`${BASE_URL}/${employee.id}`, {
+    const response = await axios.delete(`${BASE_URL_EMPLOYEE}/${employee.id}`, {
       headers: {
         Authorization: `Bearer ${employee.token}`
       }
