@@ -14,8 +14,6 @@ const EditEmployeeButton = ({employee}:Props) => {
     navigate("/edit-employee", {state: {employee}});
   };
 
-  
-  
   return (
     <IconButton sx={{ color: "orange" }} onClick={handleEditEmployee}>
       <EditIcon />

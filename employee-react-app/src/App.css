@@ -50,16 +50,17 @@
 .grid-item {
   padding: 0 !important;
 }
+
 .card-content {
   padding: 10px;
 }
 
 .pagination {
+  margin-top: 2rem;
   display: flex;
   width: 100%;
 }
 .page-entries {
-  flex-grow: 1;
   text-align: left;
 }
 .page-buttons {

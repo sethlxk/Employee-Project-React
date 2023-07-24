@@ -18,9 +18,13 @@ const initialState: EmployeeState = {
 
 export const fetchAllEmployees = createAsyncThunk(
   "employeeSlice/fetchAllEmployees",
-  async () => {
+  async (token: string) => {
     try {
-      const response = await axios.get(BASE_URL);
+      const response = await axios.get(BASE_URL, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       return response.data;
     } catch (error: any) {
       console.log(error);
@@ -34,9 +38,15 @@ export const createEmployee = createAsyncThunk(
     name: string;
     salary: number;
     department: Department;
+    token: string
   }) => {
     try {
-      const response = await axios.post(BASE_URL, employee);
+      const employeeDetails = {name:employee.name, salary:employee.salary, department:employee.department}
+      const response = await axios.post(BASE_URL, employeeDetails, {
+        headers: {
+          Authorization: `Bearer ${employee.token}`
+        }
+      });
       return response.data;
     } catch (error: any) {
       console.log(error);
@@ -44,19 +54,27 @@ export const createEmployee = createAsyncThunk(
     }
   }
 );
-export const editEmployee = createAsyncThunk("employeeSlice/editEmployee", async(employee: {id:number, name:string, salary: number, department: Department}) => {
+export const editEmployee = createAsyncThunk("employeeSlice/editEmployee", async(employee: {id:number, name:string, salary: number, department: Department, token: string}) => {
   try {
     const newEmployee = {name: employee.name, salary: employee.salary, department: employee.department}
-    const response = await axios.put(`${BASE_URL}/${employee.id}`, newEmployee)
+    const response = await axios.put(`${BASE_URL}/${employee.id}`, newEmployee, {
+      headers: {
+        Authorization: `Bearer ${employee.token}`
+      }
+    })
     return response.data
   } catch (error:any) {
     console.log(error)
     return error.response.data
   }
 })
-export const deleteEmployee = createAsyncThunk("employeeSlice/deleteEmployee", async(id:number) => {
+export const deleteEmployee = createAsyncThunk("employeeSlice/deleteEmployee", async(employee: {id:number, token:string}) => {
   try {
-    const response = await axios.delete(`${BASE_URL}/${id}`)
+    const response = await axios.delete(`${BASE_URL}/${employee.id}`, {
+      headers: {
+        Authorization: `Bearer ${employee.token}`
+      }
+    })
     return response.data
   } catch (error:any) {
     console.log(error)

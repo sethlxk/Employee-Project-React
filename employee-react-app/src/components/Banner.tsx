@@ -1,12 +1,13 @@
-
 import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 import AddEmployeeButton from "./AddEmployeeButton";
+import { useLocation } from "react-router-dom";
+import LogoutButton from "./LogoutButton";
 
-// }
 const Banner = () => {
+  const location = useLocation();
   return (
-    <Box sx={{ flexGrow: 1}}>
-      <AppBar className='appbar' sx={{bgcolor:"darkblue"}}>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar className="appbar" sx={{ bgcolor: "darkblue" }}>
         <Toolbar>
           <Typography
             variant="h6"
@@ -15,7 +16,9 @@ const Banner = () => {
           >
             Employees
           </Typography>
-          <AddEmployeeButton />
+          {location.pathname != "/" && <AddEmployeeButton/>}
+          {(location.pathname != "/" && <LogoutButton />) &&
+            (location.pathname != "/register" && <LogoutButton />)}
         </Toolbar>
       </AppBar>
     </Box>

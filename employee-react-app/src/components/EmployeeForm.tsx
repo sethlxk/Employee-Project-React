@@ -12,7 +12,7 @@ import { MouseEventHandler, useEffect, useState } from "react";
 import { Department } from "../models/employee.model";
 import { createEmployee, editEmployee } from "../store/features/employeeSlice";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../store/store";
+import { useAppDispatch, useAppSelector } from "../store/store";
 import { validateName, validateSalary } from "../utils/employeeValidation";
 
 const EmployeeForm = () => {
@@ -25,9 +25,15 @@ const EmployeeForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-
+  const lstoken = localStorage.getItem("token");
+  const token = useAppSelector((state) => state.TokenSlice.token);
   useEffect(() => {
-    if (location.pathname === "/edit-employee") {
+    if (!lstoken) {
+      navigate("/");
+    }
+  });
+  useEffect(() => {
+    if (location.pathname === "/edit-employee" && lstoken) {
       setName(location.state.employee.name.trim());
       setSalary(location.state.employee.salary as unknown as string);
       setDepartment(location.state.employee.department);
@@ -46,7 +52,7 @@ const EmployeeForm = () => {
       setEditErrorDialog(true);
       return;
     }
-    
+
     let { isValid: isNameValid, errorMessage: nameErrorMessage } =
       validateName(name);
     let { isValid: isSalaryValid, errorMessage: salaryErrorMessage } =
@@ -55,16 +61,16 @@ const EmployeeForm = () => {
     setNameError(nameErrorMessage);
 
     setSalaryError(salaryErrorMessage);
-    if (isNameValid && isSalaryValid) {
+    if (isNameValid && isSalaryValid && token) {
       try {
         const salary = +salaryString;
         const id = location.state.employee.id;
-        const employee = { id, name, salary, department };
+        const employee = { id, name, salary, department, token };
         await dispatch(editEmployee(employee)).unwrap();
         setName("");
         setSalary("");
         setDepartment(Department.PS);
-        navigate("/");
+        navigate("/home");
       } catch (error) {
         console.log(error);
       }
@@ -86,15 +92,15 @@ const EmployeeForm = () => {
 
     setSalaryError(salaryErrorMessage);
 
-    if (isNameValid && isSalaryValid) {
+    if (isNameValid && isSalaryValid && token) {
       try {
         const salary = +salaryString;
-        const employee = { name:name.trim(), salary, department };
+        const employee = { name: name.trim(), salary, department, token };
         await dispatch(createEmployee(employee)).unwrap();
         setName("");
         setSalary("");
         setDepartment(Department.PS);
-        navigate("/");
+        navigate("/home", { state: true });
       } catch (error) {
         console.log(error);
       }
@@ -104,7 +110,7 @@ const EmployeeForm = () => {
   return (
     <Box
       sx={{
-        width: 'auto',
+        width: "auto",
         height: "40rem",
         boxShadow: 2,
         borderRadius: 2,
