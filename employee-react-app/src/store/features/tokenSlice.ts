@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BASE_URL_TOKEN } from "../../constants/constants";
 
+//technically don't have to use redux to store JWT, can just use localStorage to store/delete token. Only use redux if you want to extract information from the token
 
 interface TokenState {
   token: string | null;
@@ -20,7 +21,7 @@ export const getToken = createAsyncThunk(
   async (user: { username: string; password: string }) => {
     try {
       const response = await axios.post(BASE_URL_TOKEN, user);
-      localStorage.setItem("token", response.data)
+      localStorage.setItem("token", response.data);
       return response.data;
     } catch (error: any) {
       console.log(error);

@@ -19,7 +19,6 @@ interface Props {
   employee: Employee;
 }
 const DeleteEmployeeButton = ({ employee }: Props) => {
-  // let token = useAppSelector((state) => state.TokenSlice.token);
   const lstoken = localStorage.getItem("token");
   const dispatch = useAppDispatch();
   const [isDeleteDialogOpen, setDeleteDialog] = useState<boolean>(false);
