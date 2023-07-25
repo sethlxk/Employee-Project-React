@@ -58,7 +58,7 @@ const EmployeeGrid = () => {
     dispatch(paginationActions.setCurrentPage({ currentPage: page }));
   };
   return (
-    <Box>
+    <Box height='70vh' display='flex' flexDirection='column' justifyContent='space-between'>
       <Grid
         margin={"0"}
         container
@@ -66,6 +66,9 @@ const EmployeeGrid = () => {
         width="100%"
         gap="20px"
         justifyContent="space-between"
+        // height= '90vh'
+        // display='flex'
+        // flexDirection='column'
       >
         {pagedEmployees.map((employee) => (
           <Grid

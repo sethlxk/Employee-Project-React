@@ -12,7 +12,7 @@ import { MouseEventHandler, useEffect, useState } from "react";
 import { Department } from "../models/employee.model";
 import { createEmployee, editEmployee } from "../store/features/employeeSlice";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../store/store";
+import { useAppDispatch} from "../store/store";
 import { validateName, validateSalary } from "../utils/employeeValidation";
 
 const EmployeeForm = () => {
@@ -26,7 +26,6 @@ const EmployeeForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const lstoken = localStorage.getItem("token");
-  const token = useAppSelector((state) => state.TokenSlice.token);
   useEffect(() => {
     if (!lstoken) {
       navigate("/");
@@ -61,11 +60,11 @@ const EmployeeForm = () => {
     setNameError(nameErrorMessage);
 
     setSalaryError(salaryErrorMessage);
-    if (isNameValid && isSalaryValid && token) {
+    if (isNameValid && isSalaryValid && lstoken) {
       try {
         const salary = +salaryString;
         const id = location.state.employee.id;
-        const employee = { id, name, salary, department, token };
+        const employee = { id, name, salary, department, token:lstoken };
         await dispatch(editEmployee(employee)).unwrap();
         setName("");
         setSalary("");
@@ -92,10 +91,10 @@ const EmployeeForm = () => {
 
     setSalaryError(salaryErrorMessage);
 
-    if (isNameValid && isSalaryValid && token) {
+    if (isNameValid && isSalaryValid && lstoken) {
       try {
         const salary = +salaryString;
-        const employee = { name: name.trim(), salary, department, token };
+        const employee = { name: name.trim(), salary, department, token: lstoken };
         await dispatch(createEmployee(employee)).unwrap();
         setName("");
         setSalary("");

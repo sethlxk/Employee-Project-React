@@ -9,7 +9,7 @@ import {
   IconButton,
 } from "@mui/material";
 import { Employee } from "../models/employee.model";
-import { useAppDispatch, useAppSelector } from "../store/store";
+import { useAppDispatch} from "../store/store";
 import {
   deleteEmployee,
   fetchAllEmployees,
@@ -19,7 +19,8 @@ interface Props {
   employee: Employee;
 }
 const DeleteEmployeeButton = ({ employee }: Props) => {
-  let token = useAppSelector((state) => state.TokenSlice.token);
+  // let token = useAppSelector((state) => state.TokenSlice.token);
+  const lstoken = localStorage.getItem("token");
   const dispatch = useAppDispatch();
   const [isDeleteDialogOpen, setDeleteDialog] = useState<boolean>(false);
   const handleDeleteButton = () => {
@@ -28,11 +29,11 @@ const DeleteEmployeeButton = ({ employee }: Props) => {
 
   const handleDeleteDialogCloseDelete = async () => {
     try {
-      if (token) {
-        const employeeInfo = { id: employee.id, token };
+      if (lstoken) {
+        const employeeInfo = { id: employee.id, token: lstoken };
         await dispatch(deleteEmployee(employeeInfo)).unwrap();
         setDeleteDialog(false);
-        await dispatch(fetchAllEmployees(token)).unwrap();
+        await dispatch(fetchAllEmployees(lstoken)).unwrap();
       }
     } catch (error) {
       console.log(error);
